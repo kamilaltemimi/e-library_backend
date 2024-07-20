@@ -38,7 +38,7 @@ exports.addNewUser = (req, res) => {
         res.status(200).send(result);
       }
     }
-  )
+  );
 };
 
 exports.updateUser = (req, res) => {
@@ -54,5 +54,5 @@ exports.updateUser = (req, res) => {
         res.status(200).send(result);
       }
     }
-  )
+  );
 };
