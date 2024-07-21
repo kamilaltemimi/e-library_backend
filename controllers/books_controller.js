@@ -58,3 +58,18 @@ exports.updateBook = (req, res) => {
         }
     );
 };
+
+exports.deleteBook = (req, res) => {
+    const id = req.params.id;
+    database.execute(
+      "DELETE FROM users WHERE book_id = ?",
+      [ id ],
+      (err, result) => {
+        if (err) {
+          res.status(500).send({ error: `An error has occurred while deleting book with id: ${id}` });
+        } else {
+          res.status(200).send(result);
+        }
+      }
+    );
+  };

@@ -58,3 +58,18 @@ exports.updateBookRating = (req, res) => {
         }
     );
 };
+
+exports.deleteRating = (req, res) => {
+    const id = req.params.id;
+    database.execute(
+      "DELETE FROM rating WHERE rating_id = ?",
+      [ id ],
+      (err, result) => {
+        if (err) {
+          res.status(500).send({ error: `An error has occurred while deleting rating with id: ${id}` });
+        } else {
+          res.status(200).send(result);
+        }
+      }
+    );
+  };

@@ -56,3 +56,18 @@ exports.updateUser = (req, res) => {
     }
   );
 };
+
+exports.deleteUser = (req, res) => {
+  const id = req.params.id;
+  database.execute(
+    "DELETE FROM users WHERE user_id = ?",
+    [ id ],
+    (err, result) => {
+      if (err) {
+        res.status(500).send({ error: `An error has occurred while deleting user with id: ${id}` });
+      } else {
+        res.status(200).send(result);
+      }
+    }
+  );
+};
