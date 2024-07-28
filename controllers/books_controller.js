@@ -25,12 +25,12 @@ exports.getBookById = (req, res) => {
                 res.status(200).send(result);
             }
         }
-    )
-}
+    );
+};
 
 exports.borrowBook = (req, res) => {
     const id = req.params.userId
-    const bookId = req.params.bookId
+    const bookId = req.body.bookId
     database.execute(
         'INSERT INTO borrowed_books (user_id, book_id) VALUES (?, ?)',
         [ id, bookId ],
@@ -41,13 +41,13 @@ exports.borrowBook = (req, res) => {
                 res.status(200).send(result)
             }
         }
-    )
-}
+    );
+};
 
-exports.getBorrowedBooks = (req, res) => {
+exports.getBorrowedBooksByUser = (req, res) => {
     const id = req.params.id
     database.execute(
-        'SELECT * FROM borrowed_books WHERE user_id = ?',
+        'SELECT * FROM books JOIN borrowed_books ON books.book_id = borrowed_books.book_id WHERE borrowed_books.user_id = ?',
         [ id ],
         (err, result) => {
             if (err) {
@@ -56,8 +56,24 @@ exports.getBorrowedBooks = (req, res) => {
                 res.status(200).send(result)
             }
         }
-    )
-}
+    );
+};
+
+exports.returnBorrowedBook = (req, res) => {
+    const userId = req.params.userId
+    const bookId = req.params.bookId
+    database.execute(
+        "DELETE FROM borrowed_books WHERE user_id = ? AND book_id = ?",
+        [ userId, bookId ],
+        (err, result) => {
+            if (err) {
+                res.status(500).send({ error: 'An error has occurred while returning a book'} )
+            } else {
+                res.status(200).send(result)
+            }
+        }
+    );
+};
 
 exports.addNewBook = (req, res) => {
     const { title, author, description, publicationYear, addedBy, bookImage } = req.body;
